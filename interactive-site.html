@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Website</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #111827;
+      --text: #e2e8f0;
+      --accent: #7dd3fc;
+      --accent-strong: #38bdf8;
+      --muted: #94a3b8;
+      --shadow: 0 24px 80px rgba(15, 23, 42, 0.35);
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background: radial-gradient(circle at top, rgba(59, 130, 246, 0.2), transparent 30%),
+                  linear-gradient(180deg, #020617 0%, #111827 100%);
+      color: var(--text);
+      font-family: Inter, system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    button, input, textarea {
+      font: inherit;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.9rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .brand span {
+      width: 2rem;
+      height: 2rem;
+      display: grid;
+      place-items: center;
+      border-radius: 0.75rem;
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+      color: #0f172a;
+      font-weight: 800;
+    }
+
+    nav {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover {
+      color: var(--text);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      padding: 3rem 0 2rem;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.4rem, 4vw, 4.2rem);
+      line-height: 1.05;
+    }
+
+    .hero p {
+      max-width: 52rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.95rem 1.6rem;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+      color: #0f172a;
+      cursor: pointer;
+      transition: transform 0.2s ease, filter 0.2s ease;
+      font-weight: 700;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.06);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .feature-card {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: 1.5rem;
+      padding: 1.6rem;
+      box-shadow: var(--shadow);
+      min-height: 180px;
+    }
+
+    .feature-card h2 {
+      margin: 0 0 0.75rem;
+      font-size: 1.15rem;
+    }
+
+    .feature-card p {
+      margin: 0;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .interactive-panel {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .panel {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: 1.5rem;
+      padding: 1.75rem;
+      box-shadow: var(--shadow);
+    }
+
+    .panel h3 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+
+    .panel button {
+      width: 100%;
+      border-radius: 1rem;
+      margin-bottom: 0.75rem;
+      background: #111827;
+      color: var(--text);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      cursor: pointer;
+    }
+
+    .panel input,
+    .panel textarea,
+    .panel select {
+      width: 100%;
+      margin-bottom: 0.9rem;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 1rem;
+      background: #0f172a;
+      color: var(--text);
+      padding: 0.95rem 1rem;
+    }
+
+    .panel small {
+      display: block;
+      color: #7c3aed;
+      margin-bottom: 1rem;
+    }
+
+    .feedback {
+      margin-top: 0.4rem;
+      color: #86efac;
+      font-weight: 600;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    .info-card {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.13);
+      border-radius: 1.5rem;
+      padding: 1.25rem;
+      transition: transform 0.2s ease;
+    }
+
+    .info-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .info-card h4 {
+      margin: 0 0 0.75rem;
+      font-size: 1rem;
+    }
+
+    .info-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .sparkline {
+      display: inline-flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .sparkline span {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.25);
+    }
+
+    .footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(148, 163, 184, 0.12);
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(56, 189, 248, 0.12);
+      padding: 0.55rem 0.85rem;
+      border-radius: 999px;
+      color: #bfdbfe;
+    }
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      cursor: pointer;
+      user-select: none;
+      color: var(--text);
+    }
+
+    .theme-toggle input {
+      display: none;
+    }
+
+    .theme-switch {
+      width: 42px;
+      height: 22px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.22);
+      position: relative;
+      transition: background 0.2s ease;
+    }
+
+    .theme-switch::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      transition: transform 0.2s ease;
+    }
+
+    input:checked + .theme-switch::after {
+      transform: translateX(20px);
+    }
+
+    input:checked + .theme-switch {
+      background: rgba(56, 189, 248, 0.8);
+    }
+
+    #message {
+      min-height: 1.4rem;
+    }
+
+    @media (max-width: 840px) {
+      .interactive-panel {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <a class="brand" href="#">
+        <span>W</span>
+        <div>
+          <div>WebPulse</div>
+          <div style="font-size:0.8rem; color: var(--muted);">Interactive demo</div>
+        </div>
+      </a>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#interactive">Interactive</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h1>Build engagement with a responsive interactive website</h1>
+        <p>Experience a dynamic landing page with animations, live theme switching, interactive content cards, and instant client-side validation.</p>
+      </div>
+
+      <div class="hero-actions">
+        <button class="btn" id="actionButton">Try the demo</button>
+        <button class="btn" id="scrollToContact">Say hello</button>
+      </div>
+    </section>
+
+    <section id="features" class="hero-grid">
+      <article class="feature-card">
+        <h2>Animated interaction</h2>
+        <p>Click the buttons and watch the page respond instantly with a clean micro-interaction and status updates.</p>
+      </article>
+      <article class="feature-card">
+        <h2>Theme toggle</h2>
+        <p>Switch between light and dark-style branding right in the browser, then keep the design consistent across the page.</p>
+      </article>
+      <article class="feature-card">
+        <h2>Form feedback</h2>
+        <p>Send a quick message using a validated contact form that confirms your input without refreshing the page.</p>
+      </article>
+      <article class="feature-card">
+        <h2>Dynamic cards</h2>
+        <p>Choose content categories and watch the page filter cards instantly based on your selection.</p>
+      </article>
+    </section>
+
+    <section id="interactive" class="interactive-panel">
+      <div class="panel">
+        <h3>Live content filter</h3>
+        <p>Select a category to filter the cards below. This interaction is performed instantly in JavaScript.</p>
+        <select id="categorySelect">
+          <option value="all">All categories</option>
+          <option value="design">Design</option>
+          <option value="productivity">Productivity</option>
+          <option value="analytics">Analytics</option>
+        </select>
+        <div class="card-grid" id="cardGrid">
+          <article class="info-card" data-category="design">
+            <h4>Bright design systems</h4>
+            <p>Showcase your ideas with flexible layouts and polished card-based user interfaces.</p>
+          </article>
+          <article class="info-card" data-category="productivity">
+            <h4>Workflow automation</h4>
+            <p>Speed up daily tasks and keep collaboration smooth across teams with smart interactions.</p>
+          </article>
+          <article class="info-card" data-category="analytics">
+            <h4>Realtime analytics</h4>
+            <p>Keep your project decisions grounded in live user trends and performance data.</p>
+          </article>
+          <article class="info-card" data-category="design">
+            <h4>Pixel-perfect visuals</h4>
+            <p>Create attention-grabbing interfaces with strong typography, color, and spacing.</p>
+          </article>
+          <article class="info-card" data-category="productivity">
+            <h4>Smart task boards</h4>
+            <p>Organize ideas and next actions using cards that update immediately as you interact.</p>
+          </article>
+          <article class="info-card" data-category="analytics">
+            <h4>Performance dashboards</h4>
+            <p>Display key statistics with clear visual hierarchy and instant updates when data changes.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Contact form</h3>
+        <p>Send feedback directly from the page. The form validates the fields and displays success or error state immediately.</p>
+        <form id="contactForm">
+          <input type="text" id="nameInput" placeholder="Your name" required />
+          <input type="email" id="emailInput" placeholder="Your email" required />
+          <textarea id="messageInput" rows="5" placeholder="Tell us about your project" required></textarea>
+          <button class="btn" type="submit">Send message</button>
+          <div id="message"></div>
+        </form>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="badge">Interactive landing page • Responsive • Pure HTML/CSS/JS</div>
+      <label class="theme-toggle">
+        <input type="checkbox" id="themeSwitch" />
+        <span class="theme-switch" aria-hidden="true"></span>
+        <span>Dark theme</span>
+      </label>
+    </footer>
+  </div>
+
+  <script>
+    const actionButton = document.getElementById('actionButton');
+    const scrollToContact = document.getElementById('scrollToContact');
+    const categorySelect = document.getElementById('categorySelect');
+    const cardGrid = document.getElementById('cardGrid');
+    const contactForm = document.getElementById('contactForm');
+    const messageEl = document.getElementById('message');
+    const themeSwitch = document.getElementById('themeSwitch');
+
+    function showToast(content, success = true) {
+      messageEl.textContent = content;
+      messageEl.style.color = success ? '#86efac' : '#fb7185';
+    }
+
+    actionButton.addEventListener('click', () => {
+      actionButton.textContent = 'Great choice!';
+      actionButton.style.transform = 'scale(1.02)';
+      setTimeout(() => {
+        actionButton.textContent = 'Try the demo';
+        actionButton.style.transform = '';
+      }, 1200);
+    });
+
+    scrollToContact.addEventListener('click', () => {
+      document.getElementById('contactForm').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    categorySelect.addEventListener('change', event => {
+      const selected = event.target.value;
+      const cards = cardGrid.querySelectorAll('.info-card');
+      cards.forEach(card => {
+        const category = card.dataset.category;
+        card.style.display = selected === 'all' || category === selected ? 'block' : 'none';
+      });
+    });
+
+    contactForm.addEventListener('submit', event => {
+      event.preventDefault();
+      const name = document.getElementById('nameInput').value.trim();
+      const email = document.getElementById('emailInput').value.trim();
+      const message = document.getElementById('messageInput').value.trim();
+
+      if (!name || !email || !message) {
+        showToast('Please fill out every field before sending.', false);
+        return;
+      }
+
+      if (!/^\S+@\S+\.\S+$/.test(email)) {
+        showToast('Please enter a valid email address.', false);
+        return;
+      }
+
+      showToast('Message sent successfully! We will contact you soon.');
+      contactForm.reset();
+    });
+
+    themeSwitch.addEventListener('change', event => {
+      const isDark = event.target.checked;
+      if (isDark) {
+        document.documentElement.style.setProperty('--bg', '#ffffff');
+        document.documentElement.style.setProperty('--surface', '#f8fafc');
+        document.documentElement.style.setProperty('--text', '#0f172a');
+        document.documentElement.style.setProperty('--accent', '#2563eb');
+        document.documentElement.style.setProperty('--accent-strong', '#1d4ed8');
+        document.documentElement.style.setProperty('--muted', '#475569');
+        document.body.style.background = 'radial-gradient(circle at top, rgba(59, 130, 246, 0.15), transparent 30%), linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%)';
+      } else {
+        document.documentElement.style.setProperty('--bg', '#0f172a');
+        document.documentElement.style.setProperty('--surface', '#111827');
+        document.documentElement.style.setProperty('--text', '#e2e8f0');
+        document.documentElement.style.setProperty('--accent', '#7dd3fc');
+        document.documentElement.style.setProperty('--accent-strong', '#38bdf8');
+        document.documentElement.style.setProperty('--muted', '#94a3b8');
+        document.body.style.background = 'radial-gradient(circle at top, rgba(59, 130, 246, 0.2), transparent 30%), linear-gradient(180deg, #020617 0%, #111827 100%)';
+      }
+    });
+  </script>
+</body>
+</html>
